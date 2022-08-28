@@ -8,17 +8,24 @@ from method_manage.Config.path import TMP_SAVE_FOLDER_PATH
 
 from method_manage.Method.path import createFileFolder, removeIfExist
 
+def getSignal(signal, status="", file_format="txt"):
+    signal_file_name = signal
+    if status != "":
+        signal_file_name += "_" + status
+    signal_file_name += "." + file_format
+    return signal_file_name
+
 def getStartSignal(signal):
-    return signal + ".txt"
+    return getSignal(signal)
 
 def getDataInJson(signal):
-    return signal + ".json"
+    return getSignal(signal, file_format="json")
 
 def getDataOutJson(signal):
-    return signal + "_finish.json"
+    return getSignal(signal, "finish", "json")
 
 def getFinishSignal(signal):
-    return signal + "_finish.txt"
+    return getSignal(signal, "finish")
 
 def writeData(data_file_path, data, format="wb"):
     createFileFolder(data_file_path)
@@ -55,7 +62,7 @@ def getDataIn(signal):
     data_in_json = getDataInJson(signal)
     data_file_path = TMP_SAVE_FOLDER_PATH + data_in_json
     if not os.path.exists(data_file_path):
-        print("[ERROR][signal::getData]")
+        print("[ERROR][signal::getDataIn]")
         print("\t data_file not exist!")
         return None
 
